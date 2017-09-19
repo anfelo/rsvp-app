@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
-import GuestList from './GuestList';
-import AddGuestForm from './AddGuestForm';
-import Counter from './Counter';
+import Header from './Header';
+import MainContent from './MainContent';
 
 class App extends Component {
 
@@ -88,7 +87,6 @@ class App extends Component {
   getTotalInvited = () => this.state.guests.length;
   
   getAttendingGuests = () => this.state.guests.reduce(( acc, curr ) => curr.isConfirmed ? acc + 1 : acc, 0)
-  //getConfirmedGuests = () =>
 
   render() {
     const totalInvited = this.getTotalInvited();
@@ -96,37 +94,22 @@ class App extends Component {
     const numberUnconfirmed = totalInvited - numberAttending;
     return (
       <div className="App">
-      <header>
-        <h1>RSVP</h1>
-        <p>A Treehouse App</p>
-        <AddGuestForm 
+        <Header 
           pendingGuest={this.state.pendingGuest}
           addGuest={this.addGuest}
           handleFormInputChange={e => this.handleFormInputChange(e.target.value)}/>
-      </header>
-      <div className="main">
-        <div>
-          <h2>Invitees</h2>
-          <label>
-            <input 
-              type="checkbox" 
-              onChange={this.toggleFilter}
-              checked={this.state.isFiltered}/> Hide those who haven't responded
-          </label>
-        </div>
-        <Counter 
+        <MainContent
+          toggleFilter={this.toggleFilter}
+          isFiltered={this.state.isFiltered}
           numberAttending={numberAttending}
           numberUnconfirmed={numberUnconfirmed}
-          totalInvited={totalInvited}/>
-        <GuestList 
+          totalInvited={totalInvited}
           guests={this.state.guests} 
-          isFiltered={this.state.isFiltered}
           toggleConfirmationAt={this.toggleConfirmationAt}
           toggleEditingAt={this.toggleEditingAt}
           setNameAt={this.setNameAt}
           removeGuestAt={this.removeGuestAt}
           pendingGuest={this.state.pendingGuest}/>
-      </div>
     </div>
     );
   }
